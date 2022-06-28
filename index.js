@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 2000;
-const mysql = require('mysql2/promise');
+const port = 3000;
+const mysql = require('mysql');
 
 app.use(express.json());
 app.use(cors());
@@ -25,19 +25,11 @@ const config = {
 
 const pool = mysql.createPool({
     host: "localhost",
-    port: "80",
-    user: "furniture_api",
-    password: "pwd_furniture_api",
-    database: "test_furniture"
+    port: 3306,
+    user: "root",
+    password:"root",
+    database: "furniture"
 });
-
-//Connexion à la base de données
-async function query(sql, params){
-    const connection = await mysql.createConnection(config.db);
-    const [results, ] = await connection.execute(sql, params);
-
-    return results;
-}
 
 //Message renvoyé lors de l'accès à l'index (/) de l'API
 app.get("/", (request, result) => {
@@ -45,6 +37,7 @@ result.json({message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on
 });
 
 app.get("/items", (request, result)=> {
+   console.log('attempting to connect to database')
    pool.getConnection((err, conn) => {
         console.log('etablissement de la connexion')
         if (err) throw err;
