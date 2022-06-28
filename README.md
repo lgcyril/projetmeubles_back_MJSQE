@@ -1,1 +1,1 @@
-# projetmeubles_back_MJSQE
+# back-end organization for the furniture project
