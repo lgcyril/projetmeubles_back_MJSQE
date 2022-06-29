@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 3000;
+const port = 4000;
 const mysql = require('mysql');
 
 app.use(express.json());
@@ -13,16 +13,6 @@ app.use(
 );
 
 //Paramétrage d'accès à la db
-const config = {
-    db: {
-        host: "db4free.net",
-        user: "bynood",
-        password: "oulianov",
-        database: "test_furniture",
-    },
-    listPerPage: 10,
-}
-
 const pool = mysql.createPool({
     host: "localhost",
     port: 3306,
@@ -53,6 +43,8 @@ app.get("/items", (request, result)=> {
     });
    });
 });
+
+
 
 
 app.listen(port, () => {
