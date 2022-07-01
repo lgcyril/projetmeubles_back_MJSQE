@@ -16,7 +16,7 @@ app.use(
 //Paramétrage d'accès à la db
 const pool = mysql.createPool({
     host: "localhost",
-    port: 8889,
+    port: 3306,
     user: "root",
     password: "root",
     database: "furniture"
@@ -66,18 +66,18 @@ app.get("/items/:id", (request, result) => {
 app.post("/items", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
-        const params = request.headers
+        const raw_params = request.headers
+        const params = (({name, description, price, img_url, category}) => ({name, description, price, img_url, category} ))(raw_params)
         console.log(request.headers)
         // const params = [request.body.name, 'description', ...]
-        conn.query("INSERT INTO furniture SET name = $1, description = $2...", params, (err, rows) => {
-
+        conn.query("INSERT INTO furniture SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
             conn.release()
             if (!err) {
                 result.send('Furniture was added')
             } else {
                 throw err
             }
-            console.log("yahoooooo", rows)
+            result.send("yahoooooo", rows)
         })
 
     })
