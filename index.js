@@ -45,19 +45,36 @@ app.get("/items", (request, result) => {
     });
 });
 
-app.post("/create-items", (request, result) => {
-    console.log("trying add new items")
+app.get("/items/:id", (request, result) => {
+    //need to add a variable to the id to be able to link them to the
+    //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
+    //in the object request.params, find the key id and create a variable out of it.
+    const { id } = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM furniture WHERE id = ?";
+
     pool.getConnection((err, conn) => {
-        console.log('etablissement de la connexion')
         if (err) throw err;
-        const params = request.body
-        conn.query("INSERT INTO furniture SET ?", params, (err, rows) => {
-            console.log(params)
+        console.log(request.params);
+        conn.query(sql, id, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+app.post("/items", (request, result) => {
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        const params = request.headers
+        console.log(request.headers)
+        // const params = [request.body.name, 'description', ...]
+        conn.query("INSERT INTO furniture SET name = $1, description = $2...", params, (err, rows) => {
+
             conn.release()
             if (!err) {
-                res.send('Furniture was added')
+                result.send('Furniture was added')
             } else {
-                console.log(err)
                 throw err
             }
             console.log("yahoooooo", rows)
@@ -65,8 +82,6 @@ app.post("/create-items", (request, result) => {
 
     })
 })
-
-
 
 
 app.listen(port, () => {
