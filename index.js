@@ -73,11 +73,11 @@ app.post("/items", (request, result) => {
         conn.query("INSERT INTO furniture SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
             conn.release()
             if (!err) {
-                result.send('Furniture was added')
+                result.status(200).send("Meuble ajouté avec succès en BDD")
             } else {
                 throw err
             }
-            result.send("yahoooooo", rows)
+            
         })
 
     })
