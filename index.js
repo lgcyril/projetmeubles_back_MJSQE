@@ -87,6 +87,7 @@ app.post("/items", (request, result) => {
 })
 
 //UPDATE
+
 app.put("/items", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -101,13 +102,27 @@ app.put("/items", (request, result) => {
             } else {
                 throw err
             }
-
         })
 
     })
 })
 
+// DELETE
 
+app.delete("/items/:id", (request, result) => {
+
+    const { id } = request.params; // const id = request.params.id
+    const sql = "DELETE FROM furniture WHERE id=?";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, id, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
 
 app.listen(port, () => {
     console.log(`Activation listening on port ${port}`)
