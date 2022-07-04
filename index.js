@@ -16,7 +16,7 @@ app.use(
 //Paramétrage d'accès à la db
 const pool = mysql.createPool({
     host: "localhost",
-    port: 3306,
+    port: 8889,
     user: "root",
     password: "root",
     database: "furniture"
@@ -45,6 +45,8 @@ app.get("/items", (request, result) => {
     });
 });
 
+//READ 
+
 app.get("/items/:id", (request, result) => {
     //need to add a variable to the id to be able to link them to the
     //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
@@ -62,12 +64,13 @@ app.get("/items/:id", (request, result) => {
     });
 });
 
+//CREATE
 
 app.post("/items", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
         const raw_params = request.headers
-        const params = (({name, description, price, img_url, category}) => ({name, description, price, img_url, category} ))(raw_params)
+        const params = (({ name, description, price, img_url, category }) => ({ name, description, price, img_url, category }))(raw_params)
         console.log(request.headers)
         // const params = [request.body.name, 'description', ...]
         conn.query("INSERT INTO furniture SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
@@ -77,12 +80,50 @@ app.post("/items", (request, result) => {
             } else {
                 throw err
             }
-            
+
         })
 
     })
 })
 
+//UPDATE
+
+app.put("/items/:id", (request, result) => {
+    const { id } = request.params;
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        const raw_params = request.headers
+        const params = (({ name, description, price, img_url, category }) => ({ name, description, price, img_url, category }))(raw_params)
+        console.log(request.headers)
+        // const params = [request.body.name, 'description', ...]
+        conn.query("UPDATE `furniture` SET `created`=NOW(), ? WHERE id = " + id, params, (err, rows) => {
+            conn.release()
+            if (!err) {
+                result.status(200).send("Meuble modifié avec succès en BDD")
+            } else {
+                throw err
+            }
+        })
+
+    })
+})
+
+// DELETE
+
+app.delete("/items/:id", (request, result) => {
+
+    const { id } = request.params; // const id = request.params.id
+    const sql = "DELETE FROM furniture WHERE id=?";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, id, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
 
 app.listen(port, () => {
     console.log(`Activation listening on port ${port}`)
