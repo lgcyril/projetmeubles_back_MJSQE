@@ -88,14 +88,15 @@ app.post("/items", (request, result) => {
 
 //UPDATE
 
-app.put("/items", (request, result) => {
+app.put("/items/:id", (request, result) => {
+    const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
         const raw_params = request.headers
         const params = (({ name, description, price, img_url, category }) => ({ name, description, price, img_url, category }))(raw_params)
         console.log(request.headers)
         // const params = [request.body.name, 'description', ...]
-        conn.query("UPDATE `furniture` SET `created`=NOW(), ? WHERE id = 1", params, (err, rows) => {
+        conn.query("UPDATE `furniture` SET `created`=NOW(), ? WHERE id = " + id, params, (err, rows) => {
             conn.release()
             if (!err) {
                 result.status(200).send("Meuble modifié avec succès en BDD")
