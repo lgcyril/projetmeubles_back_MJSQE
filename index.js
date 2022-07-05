@@ -64,6 +64,87 @@ app.get("/items/:id", (request, result) => {
     });
 });
 
+
+//READ BY CATEGORY : test Postman localhost:4000/get-items-byCategory/Tables
+
+app.get("/get-items-byCategory/:category", (request, result) => {
+    //need to add a variable to the id to be able to link them to the
+    //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
+    //in the object request.params, find the key id and create a variable out of it.
+    const { category } = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM furniture WHERE category = ?";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, category, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+//READ BY NAME : Test Postman : localhost:4000/get-items-byName/massif
+
+app.get("/get-items-byName/:nom", (request, result) => {
+    //need to add a variable to the id to be able to link them to the
+    //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
+    //in the object request.params, find the key id and create a variable out of it.
+    const {nom} = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM furniture WHERE name LIKE '%" + nom +"%'";
+    console.log(sql);
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, nom, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+//READ BY PRICE
+
+app.get("/get-items-byPrice/:price", (request, result) => {
+    //need to add a variable to the id to be able to link them to the
+    //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
+    //in the object request.params, find the key id and create a variable out of it.
+    const { price } = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM furniture WHERE price = ?";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, price, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+//READ BY DESCRIPTION
+
+app.get("/get-items-byDescription/:description", (request, result) => {
+    //need to add a variable to the id to be able to link them to the
+    //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
+    //in the object request.params, find the key id and create a variable out of it.
+    const { description } = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM furniture WHERE description = ?";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, description, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
 //CREATE
 
 app.post("/items", (request, result) => {
