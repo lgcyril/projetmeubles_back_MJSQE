@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 05, 2022 at 01:56 PM
+-- Generation Time: Jul 05, 2022 at 02:30 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -52,6 +52,28 @@ INSERT INTO `furniture` (`id`, `name`, `description`, `price`, `created`, `img_u
 (8, 'Canapés en cuir', 'Canapé en cuir de vache d\'Aubrac', 800, '2022-07-05 14:50:58', 'https://cdn1.vente-unique.com/thumbnails/product/91/91839/gallery_slider/lg/canape_266627.webp', 'Canapés'),
 (9, 'Canapés en velours', 'Canapé en velours émeraude', 700, '2022-07-05 14:51:56', 'https://www.decoinparis.com/img/produit/20857-canape-3-places-capitonne-chesterfield-velours-vert-carmen.jpg', 'Canapés');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `isAdmin` tinyint(1) NOT NULL,
+  `phoneNumber` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password`, `isAdmin`, `phoneNumber`) VALUES
+(1, 'marine@gmail.com', 'root', 1, '0897876787'),
+(2, 'marine@gmail.com', 'root', 1, '0897876787');
+
 --
 -- Indexes for dumped tables
 --
@@ -63,6 +85,12 @@ ALTER TABLE `furniture`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -71,6 +99,12 @@ ALTER TABLE `furniture`
 --
 ALTER TABLE `furniture`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
