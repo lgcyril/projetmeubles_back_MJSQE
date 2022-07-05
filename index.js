@@ -232,6 +232,50 @@ app.delete("/items/:id", (request, result) => {
     });
 });
 
+//READ USER Test Postman localhost:4000/user
+
+app.get("/user", (request, result) => {
+    const { user } = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM users";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, user, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+//CREATE USER
+
+app.post("/user", (request, result) => {
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        const raw_params = request.headers
+        const params = (({ Nom, Prenom, Adresse, email, password, phoneNumber }) => ({Nom, Prenom, Adresse, email, password, phoneNumber }))(raw_params)
+        console.log(params)
+        // const params = [request.body.name, 'description', ...]
+        conn.query("INSERT INTO users SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
+            conn.release()
+            if (!err) {
+                result.status(200).send("Nouveau User ajouté avec succès en BDD")
+            } else {
+                throw err
+            }
+
+        })
+
+    })
+})
+
+
+
+
+
+
 app.listen(port, () => {
     console.log(`Activation listening on port ${port}`)
 })
