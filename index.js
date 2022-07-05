@@ -16,7 +16,7 @@ app.use(
 //Paramétrage d'accès à la db
 const pool = mysql.createPool({
     host: "localhost",
-    port: 8889,
+    port: 3306,   // PC : 3306, MAC : 8889,
     user: "root",
     password: "root",
     database: "furniture"
