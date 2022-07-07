@@ -1,5 +1,5 @@
 // LANCER  node index après chaque erreur!!!
-// import {session} from 'session.js'; 
+// import {session} from 'session.js'; marche pas à cause du require!
 
 const express = require("express");  // require ou import necessite un autre type json
 const cors = require("cors");
@@ -77,6 +77,7 @@ app.get("/session", function(req, res){
     */
 })
     
+
 
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
@@ -550,6 +551,7 @@ app.put("/user/:id", (request, result) => {
 
 
 // 2.8) UPDATE USER PHONENUMBER : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// parametres : recupere les champs + valeurs envoyes par le FRONT!
 
 app.put("/user/:id", (request, result) => {
     const { id } = request.params;
@@ -578,7 +580,7 @@ app.patch("/user/:id", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
         const raw_params = request.headers
-        const params = (({ nom, prenom, adresse, email, password, phonenumber, isadmin }) => ({ nom, prenom, adresse, email, password, phonenumber, isadmin }))(raw_params)
+        const params = (({ isadmin }) => ({ isadmin }))(raw_params)
         console.log(request.headers)
         // const params = [request.body.name, 'description', ...]
         conn.query("UPDATE `users` SET `created`=NOW(), ? WHERE id = " + id, params, (err, rows) => {
