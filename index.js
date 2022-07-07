@@ -1,12 +1,22 @@
 // LANCER  node index après chaque erreur!!!
 // import {session} from 'session.js'; marche pas à cause du require!
 
+// INITIALISATION
 const express = require("express");  // require ou import necessite un autre type json
 const cors = require("cors");
 const app = express();
 const port = 4000;
 const mysql = require('mysql');
 const Connection = require("mysql/lib/Connection");
+
+// SETUP
+
+// ACTIVATION PORT LISTENING NODE JS
+
+app.listen(port, function(error){
+    if(error) throw error
+    console.log(`Activation listening on port ${port}`)
+})
 
 app.use(express.json());
 app.use(cors());
@@ -25,16 +35,21 @@ const pool = mysql.createPool({
     database: "furniture"
 });
 
-//Message renvoyé lors de l'accès à l'index (/) de l'API
-app.get("/", (request, result) => {
-    result.json({ message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on ajoute ici 2-3 tips pour la prise en main de l'API" })
-});
-
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
 //$         SESSIONS          $
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
+// La gestion de session consiste simplement à obtenir/définir/supprimer les propriétés d'un objet JavaScript.
+// Dans ExpressJS, les sessions sont créées au niveau de l'application. Cela signifie que lorsque vous lancez
+// votre application, vous créez un tout nouveau gestionnaire de session pour l'ensemble du processus Node.
+// Au lieu de cela, en PHP, les sessions sont créées sur demande. Lorsque vous accédez à une page contenant 
+// session_start(), PHP vérifie si le navigateur a déjà stocké le jeton de session. Si c'est le cas, il 
+// continue avec la session en cours, sinon il démarre une nouvelle session.
+// Supposons maintenant que vous implémentiez un panier dans Express. Si vous définissez la variable du 
+// panier au tout début, vous obtiendrez simplement le résultat indésirable d'avoir un seul panier partagé 
+// entre tous les utilisateurs de votre site Web. En d'autres termes, les variables de session doivent être
+// définies localement après certaines actions de l'utilisateur.
+// https://morioh.com/p/d1865292a4f4
 // https://fr.acervolima.com/gestion-de-session-a-l-aide-du-module-de-session-express-dans-node-js/
 // TUTO EN LIGNE : session.js
 
@@ -45,7 +60,7 @@ const session = require('express-session')
 app.use(session({
   
     // It holds the secret key for session
-    secret: 'petitePrince$$',
+    secret: 'petitePrince$$3',
   
     // Forces the session to be saved
     // back to the session store
@@ -56,10 +71,20 @@ app.use(session({
     saveUninitialized: true
 }))
 
+// Message renvoyé lors de l'accès à l'index (/) de l'API
+// VOIR ROUTAGE EXPRESS : https://expressjs.com/fr/guide/routing.html
+// Si session est chargé après la route au chemin racine /, la demande ne l’atteindra jamais et l’application 
+// n’imprimera pas “LOGGED”, car le gestionnaire de route du chemin racine interrompra le cycle de 
+// demande-réponse.
 
-// 0.2) Pour définir votre session, ouvrez simplement le navigateur et tapez cette URL : http://localhost:4000/startsession
+app.get("/", (request, result) => {
+    result.json({ message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on ajoute ici 2-3 tips pour la prise en main de l'API" })
+});
 
-app.get("/startsession", function(req, res){
+
+// 0.2) Pour définir votre session, ouvrez simplement le navigateur et tapez cette URL : http://localhost:4000/setsession
+
+app.get("/setsession", function(req, res){
        
     // req.session.key = value
     req.session.name = 'userSession'  // recupere l'ID ou username du FRONT
@@ -88,10 +113,10 @@ app.get("/sessionname", function(req, res){
 // EN TEST ACTUELLEMENT :
 var ssn;
 
-app.post('/login',function(req,res){
+app.post('/login', function(req,res){
     ssn = req.session;
-    ssn.email=req.body.email;
     console.log("ssn : " + ssn)
+    ssn.email=req.body.email;
     console.log("ssn.email : " + ssn.email)
     
     res.end('done');
@@ -473,7 +498,6 @@ app.post("/user", (request, result) => {
         if (err) throw err;
         const raw_params = request.headers  // contient tout !
         const params = (({ nom, prenom, adresse, email, password, phonenumber, isadmin }) => ({ nom, prenom, adresse, email, password, phonenumber, isadmin }))(raw_params)
-        console.log(raw_params)
         console.log(params)
         // const params = [request.body.name, 'description', ...]
         conn.query("INSERT INTO users SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
@@ -496,7 +520,10 @@ app.put("/user/:id", (request, result) => {
         if (err) throw err;
         const raw_params = request.headers
         const params = (({ nom }) => ({ nom }))(raw_params)
+        console.log("raw_params : ")
         console.log(request.headers)
+        console.log("params : " )
+        console.log(params)
         // const params = [request.body.name, 'description', ...]
         conn.query("UPDATE `users` SET `created`=NOW(), ? WHERE id = " + id, params, (err, rows) => {
             conn.release()
@@ -556,7 +583,7 @@ app.put("/user/:id", (request, result) => {
 
 // 2.6) UPDATE USER EMAIL : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
 
-app.put("/useremail/:id", (request, result) => {
+app.put("/user/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -663,9 +690,3 @@ app.delete("/user/:id", (request, result) => {
 
 
 
-// ACTIVATION PORT LISTENING NODE JS
-
-app.listen(port, function(error){
-    if(error) throw error
-    console.log(`Activation listening on port ${port}`)
-})
