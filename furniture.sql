@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 05, 2022 at 02:30 PM
+-- Generation Time: Jul 06, 2022 at 07:58 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -60,19 +60,26 @@ INSERT INTO `furniture` (`id`, `name`, `description`, `price`, `created`, `img_u
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
+  `nom` text NOT NULL,
+  `prenom` text NOT NULL,
+  `adresse` text NOT NULL,
   `email` varchar(150) NOT NULL,
+  `created` datetime DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `isAdmin` tinyint(1) NOT NULL,
-  `phoneNumber` varchar(15) NOT NULL
+  `isadmin` tinyint(4) NOT NULL,
+  `phonenumber` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `isAdmin`, `phoneNumber`) VALUES
-(1, 'marine@gmail.com', 'root', 1, '0897876787'),
-(2, 'marine@gmail.com', 'root', 1, '0897876787');
+INSERT INTO `users` (`id`, `nom`, `prenom`, `adresse`, `email`, `created`, `password`, `isadmin`, `phonenumber`) VALUES
+(1, 'Lenoir', 'Marine', '33 rue du Paradis 75008 Paris', 'marineln@gmail.com', NULL, 'root', 1, '0897876787'),
+(2, 'Luong', 'Cyril', '45 cité du Vatican', 'frPierre@gmail.com', NULL, 'root', 1, '0897876783'),
+(3, 'Goriah', 'Sabrina', '45 rue de Maurice 75004 Paris', 'sabcmoi@gmail.com', NULL, 'test', 0, '0933448822'),
+(4, 'Chillaud', 'Marine', '45 rue du Tricot 75014 Paris', 'marinec@gmail.com', '2022-07-06 21:29:23', 'test', 0, '0933448822'),
+(5, 'Toto', 'Titi', '35 rue des Toto 75005 Paris', 'toto@gmail.com', '2022-07-06 21:44:53', 'test', 0, '0934433443');
 
 --
 -- Indexes for dumped tables
@@ -104,7 +111,7 @@ ALTER TABLE `furniture`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

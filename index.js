@@ -1,3 +1,5 @@
+// LANCER  node index après chaque erreur!!!
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -27,6 +29,13 @@ app.get("/", (request, result) => {
     result.json({ message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on ajoute ici 2-3 tips pour la prise en main de l'API" })
 });
 
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
+//$       FURNITURES          $
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+//READ ALL FURNITURES
+
 app.get("/items", (request, result) => {
     console.log('attempting to connect to database')
     pool.getConnection((err, conn) => {
@@ -45,7 +54,8 @@ app.get("/items", (request, result) => {
     });
 });
 
-//READ 
+
+//READ BY ID FURNITURE
 
 app.get("/items/:id", (request, result) => {
     //need to add a variable to the id to be able to link them to the
@@ -145,12 +155,6 @@ app.get("/get-items-byPriceAsc/", (request, result) => {
 });
 
 
-
-
-
-
-
-
 //READ BY DESCRIPTION Test Postman localhost:4000/get-items-byDescription/massif
 
 app.get("/get-items-byDescription/:description", (request, result) => {
@@ -171,7 +175,7 @@ app.get("/get-items-byDescription/:description", (request, result) => {
 });
 
 
-//CREATE
+//CREATE NEW FURNITURE
 
 app.post("/items", (request, result) => {
     pool.getConnection((err, conn) => {
@@ -192,6 +196,94 @@ app.post("/items", (request, result) => {
 
     })
 })
+
+
+//UPDATE FURNITURE BY ID
+
+app.put("/items/:id", (request, result) => {
+    const { id } = request.params;
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        const raw_params = request.headers
+        const params = (({ name, description, price, img_url, category }) => ({ name, description, price, img_url, category }))(raw_params)
+        console.log(request.headers)
+        // const params = [request.body.name, 'description', ...]
+        conn.query("UPDATE `furniture` SET `created`=NOW(), ? WHERE id = " + id, params, (err, rows) => {
+            conn.release()
+            if (!err) {
+                result.status(200).send("Meuble modifié avec succès en BDD")
+            } else {
+                throw err
+            }
+        })
+
+    })
+})
+
+
+// DELETE FURNITURE BY ID
+
+app.delete("/items/:id", (request, result) => {
+
+    const { id } = request.params; // const id = request.params.id
+    const sql = "DELETE FROM furniture WHERE id=?";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, id, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
+//$            USERS          $
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+//READ USER Test Postman localhost:4000/user
+
+app.get("/user", (request, result) => {
+    const { user } = request.params; // const id = request.params.id
+    const sql = "SELECT * FROM users";
+
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        console.log(request.params);
+        conn.query(sql, user, function (err, rows, fields) {
+            console.log(rows)
+            result.send(rows)
+        });
+    });
+});
+
+
+//CREATE USER Test Postman : localhost:4000/user  NE PAS UTILISER DES MAJUSCULES POUR LES NOMS DES CLES BDD
+
+app.post("/user", (request, result) => {
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        const raw_params = request.headers
+        const params = (({ nom, prenom, adresse, email, password, phonenumber, isadmin }) => ({nom, prenom, adresse, email, password, phonenumber, isadmin }))(raw_params)
+        console.log(params)
+        // const params = [request.body.name, 'description', ...]
+        conn.query("INSERT INTO users SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
+            conn.release()
+            if (!err) {
+                result.status(200).send("Nouveau User ajouté avec succès en BDD")
+            } else {
+                throw err
+            }
+
+        })
+
+    })
+})
+
 
 //UPDATE
 
@@ -231,47 +323,6 @@ app.delete("/items/:id", (request, result) => {
         });
     });
 });
-
-//READ USER Test Postman localhost:4000/user
-
-app.get("/user", (request, result) => {
-    const { user } = request.params; // const id = request.params.id
-    const sql = "SELECT * FROM users";
-
-    pool.getConnection((err, conn) => {
-        if (err) throw err;
-        console.log(request.params);
-        conn.query(sql, user, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
-        });
-    });
-});
-
-
-//CREATE USER
-
-app.post("/user", (request, result) => {
-    pool.getConnection((err, conn) => {
-        if (err) throw err;
-        const raw_params = request.headers
-        const params = (({ Nom, Prenom, Adresse, email, password, phoneNumber }) => ({Nom, Prenom, Adresse, email, password, phoneNumber }))(raw_params)
-        console.log(params)
-        // const params = [request.body.name, 'description', ...]
-        conn.query("INSERT INTO users SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
-            conn.release()
-            if (!err) {
-                result.status(200).send("Nouveau User ajouté avec succès en BDD")
-            } else {
-                throw err
-            }
-
-        })
-
-    })
-})
-
-
 
 
 
