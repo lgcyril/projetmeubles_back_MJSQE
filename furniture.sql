@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 06, 2022 at 07:58 PM
+-- Generation Time: Jul 07, 2022 at 09:27 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -79,7 +79,8 @@ INSERT INTO `users` (`id`, `nom`, `prenom`, `adresse`, `email`, `created`, `pass
 (2, 'Luong', 'Cyril', '45 cité du Vatican', 'frPierre@gmail.com', NULL, 'root', 1, '0897876783'),
 (3, 'Goriah', 'Sabrina', '45 rue de Maurice 75004 Paris', 'sabcmoi@gmail.com', NULL, 'test', 0, '0933448822'),
 (4, 'Chillaud', 'Marine', '45 rue du Tricot 75014 Paris', 'marinec@gmail.com', '2022-07-06 21:29:23', 'test', 0, '0933448822'),
-(5, 'Toto', 'Titi', '35 rue des Toto 75005 Paris', 'toto@gmail.com', '2022-07-06 21:44:53', 'test', 0, '0934433443');
+(5, 'Toto', 'Titi', '35 rue des Toto 75005 Paris', 'toto@gmail.com', '2022-07-06 21:44:53', 'test', 0, '0934433443'),
+(6, 'Chillaud', 'Eloïne', '35 rue de la Petite Princesse 75012 Paris', 'petiteprincesse@gmail.com', '2022-07-07 10:19:28', 'princesseEloine', 0, '0934433443');
 
 --
 -- Indexes for dumped tables
@@ -111,7 +112,7 @@ ALTER TABLE `furniture`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
