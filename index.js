@@ -40,7 +40,8 @@ app.get("/", (request, result) => {
 
 const session = require('express-session')
 
-// Session Setup
+// 0.1) Session Setup :
+
 app.use(session({
   
     // It holds the secret key for session
@@ -54,16 +55,22 @@ app.use(session({
     // to be saved to the store
     saveUninitialized: true
 }))
-   
+
+
+// 0.2) Pour définir votre session, ouvrez simplement le navigateur et tapez cette URL : http://localhost:4000/startsession
+
 app.get("/startsession", function(req, res){
        
     // req.session.key = value
-    req.session.name = 'userSession'
+    req.session.name = 'userSession'  // recupere l'ID ou username du FRONT
     console.log("req.session.name : " + req.session.name)
     return res.send("Session Set")
 })
-   
-app.get("/session", function(req, res){
+
+
+// 0.3) Verifie le nom de la session en cours : http://localhost:4000/sessionname
+
+app.get("/sessionname", function(req, res){
    
     var name = req.session.name
     console.log("name : " + name)
@@ -76,7 +83,48 @@ app.get("/session", function(req, res){
     })
     */
 })
+
+
+// EN TEST ACTUELLEMENT :
+var ssn;
+
+app.post('/login',function(req,res){
+    ssn = req.session;
+    ssn.email=req.body.email;
+    console.log("ssn : " + ssn)
+    console.log("ssn.email : " + ssn.email)
     
+    res.end('done');
+  });
+
+// EN TEST ACTUELLEMENT :
+app.get('/admin',function(req,res){
+    ssn = req.session;
+    console.log("Admin ssn : " )
+    console.log(ssn)
+
+    if(ssn.email) {
+    console.log("Admin ssn.email : " + ssn.email)
+      res.write('<h1>Hello '+ssn.email+'</h1>');
+      res.end('<a href="+">Logout</a>');
+    } else {
+      res.write('<h1>login first.</h1>');
+      res.end('<a href="+">Login</a>');
+    }
+  });
+
+// 0.4) Pour sortir de la session en cours : http://localhost:4000/logout
+
+app.get("/logout", function(req,res){
+    req.session.destroy(function(err) {
+      if(err) {
+        console.log(err);
+      } else {
+        res.redirect('/');
+      }
+    });
+  });
+
 
 
 
