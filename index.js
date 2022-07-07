@@ -1,6 +1,7 @@
 // LANCER  node index après chaque erreur!!!
+// import {session} from 'session.js'; 
 
-const express = require("express");
+const express = require("express");  // require ou import necessite un autre type json
 const cors = require("cors");
 const app = express();
 const port = 4000;
@@ -28,6 +29,54 @@ const pool = mysql.createPool({
 app.get("/", (request, result) => {
     result.json({ message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on ajoute ici 2-3 tips pour la prise en main de l'API" })
 });
+
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
+//$         SESSIONS          $
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+// https://fr.acervolima.com/gestion-de-session-a-l-aide-du-module-de-session-express-dans-node-js/
+// TUTO EN LIGNE : session.js
+
+const session = require('express-session')
+
+// Session Setup
+app.use(session({
+  
+    // It holds the secret key for session
+    secret: 'petitePrince$$',
+  
+    // Forces the session to be saved
+    // back to the session store
+    resave: true,
+  
+    // Forces a session that is "uninitialized"
+    // to be saved to the store
+    saveUninitialized: true
+}))
+   
+app.get("/startsession", function(req, res){
+       
+    // req.session.key = value
+    req.session.name = 'userSession'
+    console.log("req.session.name : " + req.session.name)
+    return res.send("Session Set")
+})
+   
+app.get("/session", function(req, res){
+   
+    var name = req.session.name
+    console.log("name : " + name)
+    return res.send(name)
+   
+    /*  To destroy session you can use
+        this function 
+     req.session.destroy(function(error){
+        console.log("Session Destroyed")
+    })
+    */
+})
+    
 
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
@@ -373,8 +422,9 @@ app.get("/user", (request, result) => {
 app.post("/user", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
-        const raw_params = request.headers
+        const raw_params = request.headers  // contient tout !
         const params = (({ nom, prenom, adresse, email, password, phonenumber, isadmin }) => ({ nom, prenom, adresse, email, password, phonenumber, isadmin }))(raw_params)
+        console.log(raw_params)
         console.log(params)
         // const params = [request.body.name, 'description', ...]
         conn.query("INSERT INTO users SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
@@ -457,7 +507,7 @@ app.put("/user/:id", (request, result) => {
 
 // 2.6) UPDATE USER EMAIL : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.put("/useremail/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -523,12 +573,12 @@ app.put("/user/:id", (request, result) => {
 
 // 2.9) UPDATE USER ISADMIN : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.patch("/user/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
         const raw_params = request.headers
-        const params = (({ isadmin }) => ({ isadmin }))(raw_params)
+        const params = (({ nom, prenom, adresse, email, password, phonenumber, isadmin }) => ({ nom, prenom, adresse, email, password, phonenumber, isadmin }))(raw_params)
         console.log(request.headers)
         // const params = [request.body.name, 'description', ...]
         conn.query("UPDATE `users` SET `created`=NOW(), ? WHERE id = " + id, params, (err, rows) => {
@@ -565,6 +615,7 @@ app.delete("/user/:id", (request, result) => {
 
 // ACTIVATION PORT LISTENING NODE JS
 
-app.listen(port, () => {
+app.listen(port, function(error){
+    if(error) throw error
     console.log(`Activation listening on port ${port}`)
 })
