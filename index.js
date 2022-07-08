@@ -1,5 +1,8 @@
-// LANCER  node index après chaque erreur!!!
+// LANCER  node index après chaque erreur/modif!!!
+// Ou installer Nodemon pour lancer automatiquement node.js : https://morioh.com/p/6c194fad524c
+// rs pour restart nodemon
 // import {session} from 'session.js'; marche pas à cause du require!
+
 
 // INITIALISATION
 const express = require("express");  // require ou import necessite un autre type json
