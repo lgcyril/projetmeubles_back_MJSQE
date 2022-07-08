@@ -161,9 +161,9 @@ app.get("/logout", function(req,res){
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
-// 1.1) READ ALL FURNITURES : Test Postman : GET localhost:4000/items
+// 1.1) READ ALL FURNITURES : Test Postman : GET localhost:4000/get-allItems
 
-app.get("/items", (request, result) => {
+app.get("/get-allItems", (request, result) => {
     console.log('attempting to connect to database')
     pool.getConnection((err, conn) => {
         console.log('etablissement de la connexion')
@@ -203,9 +203,9 @@ app.get("/last4items", (request, result) => {
 });
 
 
-// 1.3) READ BY ID FURNITURE : Test Postman : GET localhost:4000/items/"remplacer-par-mon-id"
+// 1.3) READ BY ID FURNITURE : Test Postman : GET localhost:4000/get-itemsbyID/"remplacer-par-mon-id"
 
-app.get("/items/:id", (request, result) => {
+app.get("/get-itemsbyID/:id", (request, result) => {
     //need to add a variable to the id to be able to link them to the
     //check this link https://stackoverflow.com/questions/41168942/how-to-input-a-nodejs-variable-into-an-sql-query
     //in the object request.params, find the key id and create a variable out of it.
@@ -323,9 +323,9 @@ app.get("/get-items-byDescription/:description", (request, result) => {
 });
 
 
-// 1.9) CREATE NEW FURNITURE : Test Postman : POST localhost:4000/items  Puis dans Headers remplir les clés name, description...
+// 1.9) CREATE NEW FURNITURE : Test Postman : POST localhost:4000/post-items  Puis dans Headers remplir les clés name, description...
 
-app.post("/items", (request, result) => {
+app.post("/post-items", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
         const raw_params = request.headers
@@ -344,9 +344,9 @@ app.post("/items", (request, result) => {
 })
 
 
-// 1.10) UPDATE FURNITURE NAME BY ID : Test Postman : PUT localhost:4000/items/"remplacer-par-mon-id"
+// 1.10) UPDATE FURNITURE NAME BY ID : Test Postman : PATCH localhost:4000/patch-itemsName/"remplacer-par-mon-id"
 
-app.put("/items/:id", (request, result) => {
+app.patch("/patch-itemsName/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -366,9 +366,9 @@ app.put("/items/:id", (request, result) => {
 })
 
 
-// 1.11) UPDATE FURNITURE DESCRIPTION BY ID : Test Postman : PUT localhost:4000/items/"remplacer-par-mon-id"
+// 1.11) UPDATE FURNITURE DESCRIPTION BY ID : Test Postman : PATCH localhost:4000/patch-itemsDescription/"remplacer-par-mon-id"
 
-app.put("/items/:id", (request, result) => {
+app.patch("/patch-itemsDescription/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -388,9 +388,9 @@ app.put("/items/:id", (request, result) => {
 })
 
 
-// 1.12) UPDATE FURNITURE PRICE BY ID : Test Postman : PUT localhost:4000/items/"remplacer-par-mon-id"
+// 1.12) UPDATE FURNITURE PRICE BY ID : Test Postman : PATCH localhost:4000/patch-itemsPrice/"remplacer-par-mon-id"
 
-app.put("/items/:id", (request, result) => {
+app.patch("/patch-itemsPrice/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -410,9 +410,9 @@ app.put("/items/:id", (request, result) => {
 })
 
 
-// 1.13) UPDATE FURNITURE IMAGE BY ID : Test Postman : PUT localhost:4000/items/"remplacer-par-mon-id"
+// 1.13) UPDATE FURNITURE IMAGE BY ID : Test Postman : PUT localhost:4000/patch-itemsImage/"remplacer-par-mon-id"
 
-app.put("/items/:id", (request, result) => {
+app.patch("/patch-itemsImage/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -432,9 +432,9 @@ app.put("/items/:id", (request, result) => {
 })
 
 
-// 1.14) UPDATE FURNITURE CATEGORY BY ID : Test Postman : PUT localhost:4000/items/"remplacer-par-mon-id"
+// 1.14) UPDATE FURNITURE CATEGORY BY ID : Test Postman : PATCH localhost:4000/patch-itemsCategory/"remplacer-par-mon-id"
 
-app.put("/items/:id", (request, result) => {
+app.patch("/patch-itemsCategory/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -453,9 +453,9 @@ app.put("/items/:id", (request, result) => {
     })
 })
 
-// 1.15) DELETE FURNITURE BY ID : Test Postman : DELETE localhost:4000/items/"remplacer-par-mon-id"
+// 1.15) DELETE FURNITURE BY ID : Test Postman : DELETE localhost:4000/del-itemsbyID/"remplacer-par-mon-id"
 
-app.delete("/items/:id", (request, result) => {
+app.delete("/del-itemsbyID/:id", (request, result) => {
 
     const { id } = request.params; // const id = request.params.id
     const sql = "DELETE FROM furniture WHERE id=?";
@@ -477,9 +477,9 @@ app.delete("/items/:id", (request, result) => {
 //$            USERS          $
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-// 2.1) READ ALL USERS : Test Postman : GET localhost:4000/user
+// 2.1) READ ALL USERS : Test Postman : GET localhost:4000/get-allUser
 
-app.get("/user", (request, result) => {
+app.get("/get-allUser", (request, result) => {
     const { user } = request.params; // const id = request.params.id
     const sql = "SELECT * FROM users";
 
@@ -494,9 +494,9 @@ app.get("/user", (request, result) => {
 });
 
 
-// 2.2) CREATE USER : Test Postman : POST localhost:4000/user  NE PAS UTILISER DES MAJUSCULES POUR LES NOMS DES CLES BDD
+// 2.2) CREATE USER : Test Postman : POST localhost:4000/post-user  NE PAS UTILISER DES MAJUSCULES POUR LES NOMS DES CLES BDD
 
-app.post("/user", (request, result) => {
+app.post("/post-user", (request, result) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
         const raw_params = request.headers  // contient tout !
@@ -515,9 +515,9 @@ app.post("/user", (request, result) => {
 })
 
 
-// 2.3) UPDATE USER NAME : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.3) UPDATE USER NAME : Test Postman : PATCH localhost:4000/patch-userName/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.patch("/patch-userName/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -540,9 +540,9 @@ app.put("/user/:id", (request, result) => {
 })
 
 
-// 2.4) UPDATE USER PRENOM : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.4) UPDATE USER PRENOM : Test Postman : PATCH localhost:4000/patch-userPrenom/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.patch("/patch-userPrenom/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -562,9 +562,9 @@ app.put("/user/:id", (request, result) => {
 })
 
 
-// 2.5) UPDATE USER ADRESSE : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.5) UPDATE USER ADRESSE : Test Postman : PATCH localhost:4000/patch-userAdresse/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.patch("/patch-userAdresse/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -584,9 +584,9 @@ app.put("/user/:id", (request, result) => {
 })
 
 
-// 2.6) UPDATE USER EMAIL : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.6) UPDATE USER EMAIL : Test Postman : PATCH localhost:4000/patch-userEmail/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.patch("/patch-userEmail/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -606,9 +606,9 @@ app.put("/user/:id", (request, result) => {
 })
 
 
-// 2.7) UPDATE USER PASSWORD : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.7) UPDATE USER PASSWORD : Test Postman : PATCH localhost:4000/patch-userPassword/"remplacer-par-mon-id"
 
-app.put("/user/:id", (request, result) => {
+app.patch("/patch-userPasword/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -628,10 +628,10 @@ app.put("/user/:id", (request, result) => {
 })
 
 
-// 2.8) UPDATE USER PHONENUMBER : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.8) UPDATE USER PHONENUMBER : Test Postman : PATCH localhost:4000/patch-userPhonenumber/"remplacer-par-mon-id"
 // parametres : recupere les champs + valeurs envoyes par le FRONT!
 
-app.put("/user/:id", (request, result) => {
+app.patch("/patch-userPhonenumber/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -651,9 +651,9 @@ app.put("/user/:id", (request, result) => {
 })
 
 
-// 2.9) UPDATE USER ISADMIN : Test Postman : PUT localhost:4000/user/"remplacer-par-mon-id"
+// 2.9) UPDATE USER ISADMIN : Test Postman : PATCH localhost:4000/patch-userIsAdmin/"remplacer-par-mon-id"
 
-app.patch("/user/:id", (request, result) => {
+app.patch("/patch-userIsAdmin/:id", (request, result) => {
     const { id } = request.params;
     pool.getConnection((err, conn) => {
         if (err) throw err;
@@ -673,9 +673,9 @@ app.patch("/user/:id", (request, result) => {
 })
 
 
-// 2.10) DELETE USER BY ID : Test Postman : DELETE localhost:4000/user/"remplacer-par-mon-id"
+// 2.10) DELETE USER BY ID : Test Postman : DELETE localhost:4000/del-userbyID/"remplacer-par-mon-id"
 
-app.delete("/user/:id", (request, result) => {
+app.delete("/del-userbyID/:id", (request, result) => {
 
     const { id } = request.params; // const id = request.params.id
     const sql = "DELETE FROM users WHERE id=?";
