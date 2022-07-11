@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"
+    rel="stylesheet">
+  <link rel="stylesheet" href="Stylesheet Home Page.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <title>Login</title>
+</head>
+
+<body>
+  <header>
+    <!--First Navbar-->
+    <nav class="navbar navbar-light bg-light sticky-top">
+      <div class="container mt-1">
+        <!-- <a class="navbar-brand">Navbar</a> -->
+        <!--Logo-->
+        <a href="Home Page.html"> <img class="img-fluid" src="images/Logoheader.png" id="logohaut"></a>
+        <!--Logo-->
+        <!--Search Form-->
+        <form class="d-flex input-group w-auto justify-content-center">
+          <input type="search" class="form-control rounded" placeholder="Je cherche un produit..." aria-label="Search"
+            aria-describedby="search-addon" />
+          <button style="font-size:20px">Search <i class="fa fa-search"></i></button>
+        </form>
+
+
+        <!--Search Form-->
+        <!--btn je vends-->
+        <button type="button" class="btn btn-primary">Je vends ! </button>
+        <!--Icon Favori-->
+
+        <img class="img-fluid " src="images/coeur-rouge.png" id="favori">
+        <!--Icon panier-->
+        <img class="img-fluid " src="images/caddie.png" id="panier">
+        <!--Icon login-->
+        <img class="img-fluid " src="images/login.png" id="login">
+      </div>
+      <!--Second Navbar-->
+      <div class="container-fluid justify-content-center align-items-center" id="secondNavbar">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+          <!-- Container wrapper -->
+          <div class="container-fluid">
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </span>
+            </button>
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <!-- Left links -->
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link fs-5 px-4 ms-4 mt-1" href="Chaises.html">Chaises</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link fs-5 px-4 ms-4 mt-1" href="Canapes.html">Canapés</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link fs-5 px-4 ms-4 mt-1" href="Tables.html">Tables</a>
+                </li>
+              </ul>
+              <!-- Left links -->
+            </div>
+          </div>
+          <!-- Collapsible wrapper -->
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!--Second Navbar-->
+    </nav>
+    <!--First Navbar-->
+    </div>
+  </header>
+  <section>
+
+    <div class="container pt-4">
+      <div class="row">
+        <p class="text-center display-6">"Login"</p>
+      </div>
+    </div>
+
+
+    <!-- Une fois logué il appelle la page /user de index.js -->
+    <form action="/user" method="post">
+      <h2>Login</h2>
+      <div class="input-field">
+        <input type="text" name="username" id="username" placeholder="Enter Username">
+      </div>
+      <div class="input-field">
+        <input type="password" name="password" id="password" placeholder="Enter Password">
+      </div>
+      <input type="submit" value="LogIn">
+    </form>
+
+  </section>
+
+  <!-- On veut afficher l'API dans id='titre' (html) -->
+  <!-- et remplacer Pdt1,4 par id='titre' -->
+  <script>
+            // appel API
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+  <footer>
+    <section>
+
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-sm">
+            <!--reponsive-->
+            <img class="img-fluid" src="images/logo.png" id="logo">
+            <img class="img-fluid" src="images/resosoc.png" id="reseaux">
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-3"> A propos</div>
+          <div class="col-3"> Conditions génerales de vente</div>
+          <div class="col-3"> Commment ça marche ?</div>
+        </div>
+      </div>
+    </section>
+  </footer>
+</body>
+
+</html>
