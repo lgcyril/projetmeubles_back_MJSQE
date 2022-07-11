@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 07, 2022 at 09:27 AM
+-- Generation Time: Jul 11, 2022 at 08:53 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -42,9 +42,9 @@ CREATE TABLE `furniture` (
 --
 
 INSERT INTO `furniture` (`id`, `name`, `description`, `price`, `created`, `img_url`, `category`) VALUES
-(1, 'Chaises rouges', 'Un ensemble de chaises rouges qui nont rien de particulier', 50, '2022-06-29 15:08:53', 'https://img.leboncoin.fr/api/v1/lbcpb1/images/ef/b3/d4/efb3d43a9cdaa43f37f0fd9e30c2d2a48ddcab19.jpg', 'chaises'),
-(2, 'Chaises vert d\'eau en bois massif épuré', 'Couleur pétante, confort absolu pour les fesses', 60, '2022-06-29 15:48:27', 'https://www.conforama.fr/canape-salon-sejour/sejour/chaise/chaise-fredrik-en-velours-vert-d-eau--lot-de-2-/p/J29132888', 'chaises'),
-(3, 'Tabouret', 'Un ensemble de chaises rouges qui nont rien de particulier', 50, '2022-06-29 15:49:51', 'https://img.leboncoin.fr/api/v1/lbcpb1/images/ef/b3/d4/efb3d43a9cdaa43f37f0fd9e30c2d2a48ddcab19.jpg', 'chaises'),
+(1, 'Chaises rouges', 'Un ensemble de chaises rouges qui nont rien de particulier', 50, '2022-06-29 15:08:53', 'https://res.cloudinary.com/dpngcje4c/image/upload/v1657189070/redchair_vkosad.webp', 'chaises'),
+(2, 'Chaises vert d\'eau en bois massif épuré', 'Couleur pétante, confort absolu pour les fesses', 60, '2022-06-29 15:48:27', 'https://res.cloudinary.com/dpngcje4c/image/upload/v1657189177/greenchair_apku9s.jpg', 'chaises'),
+(3, 'Chaises rouges', 'Un ensemble de chaises rouges qui nont rien de particulier', 50, '2022-06-29 15:49:51', 'https://res.cloudinary.com/dpngcje4c/image/upload/v1657189252/rochebobois_cea0po.jpg', 'chaises'),
 (4, 'Table Rétro', 'Belle table rétro années 70', 5000, '2022-07-05 14:14:49', 'https://cdn.manomano.com/images/images_products/5380911/P/23442578_1.jpg', 'Tables'),
 (5, 'Table en chêne massif', 'Belle table en chêne massif millénaire', 9000, '2022-07-05 14:45:39', 'https://i.etsystatic.com/9276932/r/il/4aaa44/2730904336/il_570xN.2730904336_a6bm.jpg', 'Tables'),
 (6, 'Table en érable massif', 'Belle table en érable massif millénaire', 6000, '2022-07-05 14:46:37', 'https://www.cuisines-viaud.com/wp-content/uploads/2020/04/Fabrication-Table-en-chene-massif-sur-mesure-Vendee-Artisan-G-Viaud6.jpg', 'Tables'),
@@ -75,11 +75,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nom`, `prenom`, `adresse`, `email`, `created`, `password`, `isadmin`, `phonenumber`) VALUES
-(1, 'Lenoir', 'Marine', '33 rue du Paradis 75008 Paris', 'marineln@gmail.com', NULL, 'root', 1, '0897876787'),
+(1, 'Chillaud', 'Marine', '33 rue du Paradis 75008 Paris', 'marineln@gmail.com', '2022-07-07 20:40:24', 'root', 0, '0897876787'),
 (2, 'Luong', 'Cyril', '45 cité du Vatican', 'frPierre@gmail.com', NULL, 'root', 1, '0897876783'),
 (3, 'Goriah', 'Sabrina', '45 rue de Maurice 75004 Paris', 'sabcmoi@gmail.com', NULL, 'test', 0, '0933448822'),
 (4, 'Chillaud', 'Marine', '45 rue du Tricot 75014 Paris', 'marinec@gmail.com', '2022-07-06 21:29:23', 'test', 0, '0933448822'),
-(5, 'Toto', 'Titi', '35 rue des Toto 75005 Paris', 'toto@gmail.com', '2022-07-06 21:44:53', 'test', 0, '0934433443'),
+(5, 'Mama', 'Titi', '35 rue des Toto 75005 Paris', 'toto@gmail.com', '2022-07-08 12:21:49', 'test', 0, '0934433443'),
 (6, 'Chillaud', 'Eloïne', '35 rue de la Petite Princesse 75012 Paris', 'petiteprincesse@gmail.com', '2022-07-07 10:19:28', 'princesseEloine', 0, '0934433443');
 
 --

@@ -1,14 +1,16 @@
 // LANCER  node index après chaque erreur/modif!!!
-// Ou installer Nodemon pour lancer automatiquement node.js : https://morioh.com/p/6c194fad524c
+// Ou installer Nodemon pour lancer automatiquement node.js : nodemon ./index.js https://morioh.com/p/6c194fad524c
 // rs pour restart nodemon
 // import {session} from 'session.js'; marche pas à cause du require!
 
 
-// INITIALISATION
+// INITIALISATION : mettre les require au debut!
 const express = require("express");  // require ou import necessite un autre type json
 const cors = require("cors");
-const app = express();
-const port = 4000;
+const session = require('express-session')
+const cookieParser = require("cookie-parser");
+const app = express();  // initialise l'app express
+const port = 4000;      // port web express sur 4000 : http request are routed from port 80 to 8080
 const mysql = require('mysql');
 const Connection = require("mysql/lib/Connection");
 
@@ -21,6 +23,8 @@ app.listen(port, function(error){
     console.log(`Activation listening on port ${port}`)
 })
 
+// parsing the incoming data : This will help us parser an HTTP POST method request from an HTML document. We also need to serve 
+// the CSS styling to format the outlook of the HTML form. Add the following express methods to perform these operations.
 app.use(express.json());
 app.use(cors());
 app.use(
@@ -29,7 +33,20 @@ app.use(
     })
 );
 
-//Paramétrage d'accès à la db
+//serving public file
+app.use(express.static(__dirname));
+
+// cookie parser middleware : Define Cookie-parser usage so that the server can access the necessary option to save, read and access
+// a cookie.
+app.use(cookieParser());
+
+//Paramétrage d'accès à la db. Voir différence entre createPool et createConnection : https://stackoverflow.com/questions/26432178/what-is-the-difference-between-mysql-createconnection-and-mysql-createpool-in-no
+// When you create a connection, you only have one connection and it lasts until you close it (or it is closed by the mysql server).
+// You can pass it around by reference and re-use it, or you can create and close connections on demand.
+// A pool is a place where connections get stored. When you request a connection from a pool, you will receive a connection that is
+// not currently being used, or a new connection. If you're already at the connection limit, it will wait until a connection is 
+// available before it continues. These pooled connections do not need to be manually closed, they can remain open and be easily 
+// reused.
 const pool = mysql.createPool({
     host: "localhost",
     port: 3306,   // ATTENTION CHANGER LE PORT POUR PC : 3306, MAC : 8889,
@@ -56,23 +73,42 @@ const pool = mysql.createPool({
 // https://fr.acervolima.com/gestion-de-session-a-l-aide-du-module-de-session-express-dans-node-js/
 // TUTO EN LIGNE : session.js
 
-const session = require('express-session')
+const oneDay = 1000 * 60 * 60 * 24; // creating 24 hours from milliseconds
 
-// 0.1) Session Setup :
+// 0.1) Session middleware Setup : https://www.npmjs.com/package/express-session/v/1.17.3
+// Il faut faire app.use à l'endroit où tu as toutes tes routes puis que tu vas récupérer la session dans la requête de ton 
+// action en faisant req.session.
 
 app.use(session({
   
-    // It holds the secret key for session
+    // It holds the secret key for session. It is stored in an environment variable and can’t be exposed to the public. 
+    // The key is usually long and randomly generated in a production environment.
     secret: 'petitePrince$$3',
   
-    // Forces the session to be saved
-    // back to the session store
-    resave: true,
+    // Forces the session to be saved back to the session store
+    // It enables the session to be stored back to the session store, even if the session was never modified during the request. 
+    // This can result in a race situation in case a client makes two parallel requests to the server. Thus modification made on 
+    // the session of the first request may be overwritten when the second request ends. The default value is true. However, this 
+    // may change at some point. false is a better alternative.
+    resave: false,
   
-    // Forces a session that is "uninitialized"
-    // to be saved to the store
-    saveUninitialized: true
+    // Forces a session that is "uninitialized" to be saved to the store
+    // this allows any uninitialized session to be sent to the store. When a session is created but not modified, it is referred 
+    // to as uninitialized.
+    saveUninitialized: true,
+
+    // cookie : this sets the cookie expiry time. The browser will delete the cookie after the set duration elapses. The cookie 
+    // will not be attached to any of the requests in the future. In this case, we’ve set the maxAge to a single day as computed 
+    // by the following arithmetic.
+    cookie: { maxAge: oneDay }
 }))
+
+//username and password
+const myusername = 'user1'
+const mypassword = 'mypassword'
+
+// a variable to save a session
+var mySession;
 
 // Message renvoyé lors de l'accès à l'index (/) de l'API
 // VOIR ROUTAGE EXPRESS : https://expressjs.com/fr/guide/routing.html
@@ -81,7 +117,12 @@ app.use(session({
 // demande-réponse.
 
 app.get("/", (request, result) => {
-    result.json({ message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on ajoute ici 2-3 tips pour la prise en main de l'API" })
+    //result.json({ message: "Bienvenue sur l'API des meubles 2nd life, il faudra qu'on ajoute ici 2-3 tips pour la prise en main de l'API" })
+    mySession=request.session;
+    if(mySession.userid){  // s'il est deja logué, alors il affiche ce message
+        result.send("Welcome User <a href=\'/logout'>click to logout</a>");
+    }else  // sinon la page de login
+    result.sendFile('Login.html',{root:__dirname})
 });
 
 
@@ -103,27 +144,35 @@ app.get("/sessionname", function(req, res){
     var name = req.session.name
     console.log("name : " + name)
     return res.send(name)
-   
-    /*  To destroy session you can use
-        this function 
-     req.session.destroy(function(error){
-        console.log("Session Destroyed")
-    })
-    */
 })
 
 
 // EN TEST ACTUELLEMENT :
-var ssn;
+// To create a session, the user will submit the credentials. The server will verify these credentials received in the request’s 
+// body with the username and the password for the existing user.
+// If the credentials are valid:
+// The user will be granted the necessary access.
+// The server will create a temporary user session with a random string known as a session ID to identify that session.
+// The server will send a cookie to the client’s browser. The session ID is going to be placed inside this cookie.
+// Once the client browser saves this cookie, it will send that cookie along with each subsequent request to the server. 
+// The server will validate the cookie against the session ID. If the validation is successful, the user is granted access to the 
+// requested resources on the server.
+// If the credentials are invalid, the server will not grant this user access to the resources. No session will be initialized, 
+// and no cookie will be saved.
 
-app.post('/login', function(req,res){
-    ssn = req.session;
-    console.log("ssn : " + ssn)
-    ssn.email=req.body.email;
-    console.log("ssn.email : " + ssn.email)
-    
-    res.end('done');
-  });
+// une fois logué il appelle ce lien /user et verifie le nom et mdp et envoie la home page si ok
+app.post('/user',(req,res) => {
+    if(req.body.username == myusername && req.body.password == mypassword){
+        mySession=req.session;
+        mySession.userid=req.body.username;
+        console.log(req.session)
+        res.sendFile('Home Page.html',{root:__dirname})
+        res.send(`Hey there, welcome <a href=\'/logout'>click to logout</a>`);
+    }
+    else{
+        res.send('Invalid username or password');
+    }
+})
 
 // EN TEST ACTUELLEMENT :
 app.get('/admin',function(req,res){
@@ -142,13 +191,14 @@ app.get('/admin',function(req,res){
   });
 
 // 0.4) Pour sortir de la session en cours : http://localhost:4000/logout
-
+// When the user decides to log out, the server will destroy (req.session.destroy();) the session and clear out the cookie on the 
+// client-side. Cookies are cleared in the browser when the maxAge expires.
 app.get("/logout", function(req,res){
     req.session.destroy(function(err) {
       if(err) {
         console.log(err);
       } else {
-        res.redirect('/');
+        res.redirect('/Home Page.html');
       }
     });
   });
@@ -335,6 +385,7 @@ app.post("/post-items", (request, result) => {
         conn.query("INSERT INTO furniture SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
             conn.release()
             if (!err) {
+                // A VOIR : https://stackoverflow.com/questions/7042340/error-cant-set-headers-after-they-are-sent-to-the-client
                 result.status(200).send("Meuble ajouté avec succès en BDD")
             } else {
                 throw err
