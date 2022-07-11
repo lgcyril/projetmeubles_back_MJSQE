@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 11, 2022 at 08:53 AM
+-- Generation Time: Jul 11, 2022 at 10:24 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -50,7 +50,10 @@ INSERT INTO `furniture` (`id`, `name`, `description`, `price`, `created`, `img_u
 (6, 'Table en érable massif', 'Belle table en érable massif millénaire', 6000, '2022-07-05 14:46:37', 'https://www.cuisines-viaud.com/wp-content/uploads/2020/04/Fabrication-Table-en-chene-massif-sur-mesure-Vendee-Artisan-G-Viaud6.jpg', 'Tables'),
 (7, 'Canapés en chêne massif', 'Beau canapé en chêne massif millénaire', 9000, '2022-07-05 14:49:33', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZx52DQRFhFC36UF-U1GU3aHWPE-niWpMuLfCLqw02LXiQbgQ5y9HTicVB0xZhEjfM2Jo&usqp=CAU', 'Canapés'),
 (8, 'Canapés en cuir', 'Canapé en cuir de vache d\'Aubrac', 800, '2022-07-05 14:50:58', 'https://cdn1.vente-unique.com/thumbnails/product/91/91839/gallery_slider/lg/canape_266627.webp', 'Canapés'),
-(9, 'Canapés en velours', 'Canapé en velours émeraude', 700, '2022-07-05 14:51:56', 'https://www.decoinparis.com/img/produit/20857-canape-3-places-capitonne-chesterfield-velours-vert-carmen.jpg', 'Canapés');
+(9, 'Canapés en velours', 'Canapé en velours émeraude', 700, '2022-07-05 14:51:56', 'https://www.decoinparis.com/img/produit/20857-canape-3-places-capitonne-chesterfield-velours-vert-carmen.jpg', 'Canapés'),
+(10, 'Chaises vertes émeraudes', 'Ensemble de belles chaises vertes émeraudes', 250, '2022-07-11 12:00:33', 'https://res.cloudinary.com/dpngcje4c/image/upload/v1657533818/chaises_fznwde.webp', 'chaises'),
+(11, 'Canapés beiges velour', 'Ensemble de beaux canapés beiges rétro', 550, '2022-07-11 12:04:29', 'https://res.cloudinary.com/dpngcje4c/image/upload/v1657533819/canap%C3%A9_nuage_qzfwq6.jpg', 'Canapés'),
+(12, 'Tables rétro chêne massif', 'Tables rétro en chêne massif pour votre entrée', 550, '2022-07-11 12:05:55', 'https://res.cloudinary.com/dpngcje4c/image/upload/v1657533818/bureau-en-bois-alvar-avec-tiroirs_b8n2p5.webp', 'Tables');
 
 -- --------------------------------------------------------
 
@@ -106,7 +109,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `furniture`
 --
 ALTER TABLE `furniture`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
