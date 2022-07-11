@@ -216,8 +216,9 @@ app.get("/get-itemsbyID/:id", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, id, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
+            conn.release();
+            console.log(rows);
+            result.send(rows);
         });
     });
 });
@@ -236,8 +237,9 @@ app.get("/get-items-byCategory/:category", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, category, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
+            conn.release();
+            console.log(rows);
+            result.send(rows);
         });
     });
 });
@@ -256,6 +258,7 @@ app.get("/get-items-byName/:nom", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, nom, function (err, rows, fields) {
+            conn.release();
             console.log(rows)
             result.send(rows)
         });
@@ -276,6 +279,7 @@ app.get("/get-items-byPriceDesc/", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, price, function (err, rows, fields) {
+            conn.release();
             console.log(rows)
             result.send(rows)
         });
@@ -296,8 +300,9 @@ app.get("/get-items-byPriceAsc/", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, price, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
+            conn.release();
+            console.log(rows);
+            result.send(rows);
         });
     });
 });
@@ -316,6 +321,7 @@ app.get("/get-items-byDescription/:description", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, description, function (err, rows, fields) {
+            conn.release();
             console.log(rows)
             result.send(rows)
         });
@@ -464,8 +470,9 @@ app.delete("/del-itemsbyID/:id", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, id, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
+            conn.release();
+            console.log(rows);
+            result.send(rows);
         });
     });
 });
@@ -487,8 +494,9 @@ app.get("/get-allUser", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, user, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
+            conn.release();
+            console.log(rows);
+            result.send(rows);
         });
     });
 });
@@ -504,7 +512,7 @@ app.post("/post-user", (request, result) => {
         console.log(params)
         // const params = [request.body.name, 'description', ...]
         conn.query("INSERT INTO users SET `id`=NULL, `created`=NOW(), ?", params, (err, rows) => {
-            conn.release()
+            conn.release();
             if (!err) {
                 result.status(200).send("Nouveau User ajouté avec succès en BDD")
             } else {
@@ -684,8 +692,9 @@ app.delete("/del-userbyID/:id", (request, result) => {
         if (err) throw err;
         console.log(request.params);
         conn.query(sql, id, function (err, rows, fields) {
-            console.log(rows)
-            result.send(rows)
+            conn.release();
+            console.log(rows);
+            result.send(rows);
         });
     });
 });
