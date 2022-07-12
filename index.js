@@ -122,7 +122,7 @@ app.get("/", (request, result) => {
     if(mySession.userid){  // s'il est deja logué, alors il affiche ce message
         result.send("Welcome User <a href=\'/logout'>click to logout</a>");
     }else  // sinon la page de login
-    result.sendFile('Login.html',{root:__dirname})
+    result.sendFile('Login.html',{root:"/mnt/g/Drive partagés/PIERRE/02-FMJ/EMPLOI/ADA/EXOS/projets/projetmeubles_front_FAMC/"})  //__dirname
 });
 
 
@@ -166,7 +166,7 @@ app.post('/user',(req,res) => {
         mySession=req.session;
         mySession.userid=req.body.username;
         console.log(req.session)
-        res.sendFile('Home Page.html',{root:__dirname})
+        res.sendFile('Home Page.html',{root:"/mnt/g/Drive partagés/PIERRE/02-FMJ/EMPLOI/ADA/EXOS/projets/projetmeubles_front_FAMC/"})  //__dirname
         res.send(`Hey there, welcome <a href=\'/logout'>click to logout</a>`);
     }
     else{
@@ -186,7 +186,7 @@ app.get('/admin',function(req,res){
       res.end('<a href="+">Logout</a>');
     } else {
       res.write('<h1>login first.</h1>');
-      res.end('<a href="+">Login</a>');
+      res.end('<a href="/mnt/g/Drive partagés/PIERRE/02-FMJ/EMPLOI/ADA/EXOS/projets/projetmeubles_front_FAMC/Login.html">Login</a>');
     }
   });
 
